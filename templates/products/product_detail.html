@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - ShopHub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.main_image %}
+                <img src="{{ product.main_image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center rounded" style="height: 500px;">
+                    <i class="bi bi-image text-secondary" style="font-size: 5rem;"></i>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            
+            {% if product.average_rating > 0 %}
+            <div class="mb-3">
+                <span class="text-warning">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= product.average_rating %}
+                            <i class="bi bi-star-fill"></i>
+                        {% else %}
+                            <i class="bi bi-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <span class="text-muted">({{ product.reviews_count }} reviews)</span>
+            </div>
+            {% endif %}
+            
+            <div class="mb-4">
+                <span class="price" style="font-size: 2rem;">PKR {{ product.price }}</span>
+                {% if product.compare_price %}
+                    <span class="compare-price" style="font-size: 1.5rem;">PKR {{ product.compare_price }}</span>
+                    <span class="discount-badge ms-2">Save {{ product.discount_percentage }}%</span>
+                {% endif %}
+            </div>
+            
+            <p class="lead">{{ product.short_description }}</p>
+            
+            <div class="mb-4">
+                <p><strong>SKU:</strong> {{ product.sku }}</p>
+                <p><strong>Brand:</strong> {{ product.brand.name|default:"N/A" }}</p>
+                <p><strong>Category:</strong> {{ product.category.name }}</p>
+                
+                {% if product.is_in_stock %}
+                    <p class="text-success"><i class="bi bi-check-circle"></i> In Stock ({{ product.stock }} available)</p>
+                {% else %}
+                    <p class="text-danger"><i class="bi bi-x-circle"></i> Out of Stock</p>
+                {% endif %}
+            </div>
+            
+            {% if product.is_in_stock %}
+            <form method="post" action="{% url 'cart:cart_add' product.id %}" class="mb-3">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="max-width: 200px;">
+                    <button class="btn btn-outline-secondary" type="button" onclick="decrementQty()">-</button>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+                    <button class="btn btn-outline-secondary" type="button" onclick="incrementQty()">+</button>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-lg me-2">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+            </form>
+            
+            {% if user.is_authenticated %}
+            <a href="{% url 'wishlist:add_to_wishlist' product.id %}" class="btn btn-outline-danger">
+                <i class="bi bi-heart"></i> Add to Wishlist
+            </a>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    
+    <hr class="my-5">
+    
+    <!-- Product Description -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3">Description</h3>
+            <p>{{ product.description|linebreaks }}</p>
+        </div>
+    </div>
+    
+    <!-- Reviews Section -->
+    <hr class="my-5">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Customer Reviews</h3>
+            
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6>{{ review.user.username }}</h6>
+                                <div class="text-warning mb-2">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% else %}
+                                            <i class="bi bi-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                        </div>
+                        <h6>{{ review.title }}</h6>
+                        <p>{{ review.comment }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function incrementQty() {
+    const input = document.getElementById('quantity');
+    const max = parseInt(input.max);
+    if (parseInt(input.value) < max) {
+        input.value = parseInt(input.value) + 1;
+    }
+}
+
+function decrementQty() {
+    const input = document.getElementById('quantity');
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+</script>
+{% endblock %}

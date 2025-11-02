@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            background: #f9f9f9;
+            padding: 30px;
+            border: 1px solid #ddd;
+        }
+        .success-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        .order-details {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #11998e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✅ Order Delivered!</h1>
+            <div class="success-icon">📦✓</div>
+        </div>
+        
+        <div class="content">
+            <h2>Hello {{ order.shipping_full_name }},</h2>
+            <p style="font-size: 1.2em;">Your order has been successfully delivered!</p>
+            
+            <div class="order-details">
+                <h3>Delivery Confirmation</h3>
+                <p><strong>Order Number:</strong> {{ order.order_number }}</p>
+                <p><strong>Delivered On:</strong> {{ order.delivered_at|date:"F d, Y, g:i A" }}</p>
+                {% if order.tracking_number %}
+                <p><strong>Tracking Number:</strong> {{ order.tracking_number }}</p>
+                {% endif %}
+            </div>
+            
+            <center>
+                <a href="http://127.0.0.1:8000/accounts/orders/" class="button">View Order Details</a>
+            </center>
+            
+            <p style="margin-top: 30px;">
+                We hope you love your purchase! If you have any questions or concerns about your order, please don't hesitate to contact us.
+            </p>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #e8f5e9; border-radius: 5px; text-align: center;">
+                <h3 style="color: #11998e; margin-top: 0;">❤️ Love your purchase?</h3>
+                <p>Share your experience and help other shoppers!</p>
+                <a href="http://127.0.0.1:8000/product/{{ order.items.first.product.slug }}/" style="color: #11998e; font-weight: bold;">Leave a Review</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Thank you for shopping with ShopHub!</p>
+            <p style="font-size: 0.8em; color: #999;">
+                This email was sent to {{ order.user.email }}<br>
+                ShopHub © 2025 - All rights reserved
+            </p>
+        </div>
+    </div>
+</body>
+</html>

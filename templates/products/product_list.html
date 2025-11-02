@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - ShopHub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">All Products</h1>
+    
+    <div class="row">
+        {% for product in page_obj %}
+        <div class="col-md-3 mb-4">
+            <div class="card product-card shadow-sm">
+                <a href="{% url 'products:product_detail' product.slug %}">
+                    {% if product.main_image %}
+                        <img src="{{ product.main_image.url }}" class="product-image" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="product-image bg-light d-flex align-items-center justify-content-center">
+                            <i class="bi bi-image text-secondary" style="font-size: 3rem;"></i>
+                        </div>
+                    {% endif %}
+                </a>
+                
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <a href="{% url 'products:product_detail' product.slug %}" class="text-decoration-none text-dark">
+                            {{ product.name|truncatewords:5 }}
+                        </a>
+                    </h6>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="price">PKR {{ product.price }}</span>
+                    </div>
+                    
+                    <form method="post" action="{% url 'cart:cart_add' product.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No products found.</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

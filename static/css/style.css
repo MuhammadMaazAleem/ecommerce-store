@@ -1,0 +1,363 @@
+/* Modern E-Commerce Styling with Vibrant Colors */
+
+:root {
+    /* Vibrant Color Palette */
+    --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-solid: #667eea;
+    --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --warning: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --dark: #1a202c;
+    --light: #f7fafc;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Gradient Navbar */
+.navbar {
+    background: var(--primary) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.navbar .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.navbar .nav-link:hover {
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: var(--primary);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* Hero Section with Animation */
+.hero-section {
+    background: var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.1)"/></svg>');
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-100px); }
+}
+
+/* Product Cards with Colorful Shadows */
+.product-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: white;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.product-card:hover::before {
+    opacity: 0.1;
+}
+
+.product-image {
+    height: 300px;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.5s;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1) rotate(2deg);
+}
+
+/* Colorful Badges */
+.badge-custom {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 700;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.discount-badge {
+    background: var(--secondary);
+    color: white;
+    border: 2px solid white;
+}
+
+.badge.bg-success {
+    background: var(--success) !important;
+}
+
+/* Category Cards with Gradients */
+.category-card {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.category-card:hover {
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.category-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.category-card:hover::after {
+    opacity: 0.2;
+}
+
+/* Price with Gradient */
+.price {
+    background: var(--warning);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: 1.8rem !important;
+}
+
+/* Star Ratings with Color */
+.text-warning {
+    color: #fbbf24 !important;
+    filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.4));
+}
+
+/* Cart Badge with Gradient */
+.cart-badge {
+    background: var(--secondary);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Search Bar */
+.search-bar .form-control {
+    border-radius: 25px 0 0 25px;
+    border: 3px solid white;
+    padding: 15px 25px;
+    font-size: 1.1rem;
+}
+
+.search-bar .btn {
+    border-radius: 0 25px 25px 0;
+    padding: 15px 30px;
+}
+
+/* Features Section with Colors */
+.features-section .bi {
+    background: var(--accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Footer Gradient */
+.footer {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: white;
+}
+
+/* Buttons with Multiple Colors */
+.btn-success {
+    background: var(--success);
+    border: none;
+    border-radius: 25px;
+}
+
+.btn-warning {
+    background: var(--warning);
+    border: none;
+    border-radius: 25px;
+    color: white;
+}
+
+.btn-info {
+    background: var(--accent);
+    border: none;
+    border-radius: 25px;
+}
+
+/* Animated Background Elements */
+.animated-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-bg::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Card Hover Effects */
+.card {
+    transition: all 0.3s;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* Input Focus Effects */
+.form-control:focus {
+    border-color: var(--primary-solid);
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+/* Link Hover with Underline Animation */
+a {
+    position: relative;
+    transition: color 0.3s;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-solid);
+    transition: width 0.3s;
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design Enhancements */
+@media (max-width: 768px) {
+    .product-image {
+        height: 250px;
+    }
+    
+    .hero-section {
+        padding: 40px 0 !important;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem !important;
+    }
+}
+
+/* Add some fun gradient text */
+.gradient-text {
+    background: var(--primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Shimmer effect for loading images */
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

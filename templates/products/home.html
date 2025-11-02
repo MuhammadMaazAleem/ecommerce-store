@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Home - ShopHub E-Commerce{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Welcome to ShopHub</h1>
+        <p class="lead mb-4">Discover amazing products at unbeatable prices</p>
+        
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form action="{% url 'products:search' %}" method="get" class="input-group input-group-lg">
+                <input type="text" name="q" class="form-control" placeholder="Search for products..." aria-label="Search">
+                <button class="btn btn-light" type="submit">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Section -->
+{% if categories %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Shop by Category</h2>
+        <div class="row g-4">
+            {% for category in categories %}
+            <div class="col-md-4">
+                <a href="{% url 'products:category_detail' category.slug %}" class="text-decoration-none">
+                    <div class="card category-card border-0 shadow-sm">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}" class="card-img-top" alt="{{ category.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i class="bi bi-grid-3x3 text-secondary" style="font-size: 3rem;"></i>
+                            </div>
+                        {% endif %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ category.name }}</h5>
+                            <p class="card-text text-muted small">{{ category.products.count }} products</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Featured Products</h2>
+            <a href="{% url 'products:product_list' %}" class="btn btn-outline-primary">View All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-md-3">
+                <div class="card product-card shadow-sm position-relative">
+                    {% if product.discount_percentage > 0 %}
+                        <span class="badge-custom discount-badge">-{{ product.discount_percentage }}%</span>
+                    {% endif %}
+                    
+                    <a href="{% url 'products:product_detail' product.slug %}">
+                        {% if product.main_image %}
+                            <img src="{{ product.main_image.url }}" class="product-image" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="product-image bg-light d-flex align-items-center justify-content-center">
+                                <i class="bi bi-image text-secondary" style="font-size: 3rem;"></i>
+                            </div>
+                        {% endif %}
+                    </a>
+                    
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-decoration-none text-dark">
+                                {{ product.name|truncatewords:5 }}
+                            </a>
+                        </h6>
+                        
+                        <div class="mb-2">
+                            {% if product.average_rating > 0 %}
+                                <span class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= product.average_rating %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% else %}
+                                            <i class="bi bi-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                                <small class="text-muted">({{ product.reviews_count }})</small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="price">PKR {{ product.price }}</span>
+                                {% if product.compare_price %}
+                                    <span class="compare-price">PKR {{ product.compare_price }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <form method="post" action="{% url 'cart:cart_add' product.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- New Arrivals -->
+{% if new_products %}
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>New Arrivals</h2>
+            <a href="{% url 'products:product_list' %}" class="btn btn-outline-primary">View All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        
+        <div class="row g-4">
+            {% for product in new_products %}
+            <div class="col-md-3">
+                <div class="card product-card shadow-sm position-relative">
+                    <span class="badge-custom bg-success">NEW</span>
+                    
+                    <a href="{% url 'products:product_detail' product.slug %}">
+                        {% if product.main_image %}
+                            <img src="{{ product.main_image.url }}" class="product-image" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="product-image bg-light d-flex align-items-center justify-content-center">
+                                <i class="bi bi-image text-secondary" style="font-size: 3rem;"></i>
+                            </div>
+                        {% endif %}
+                    </a>
+                    
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-decoration-none text-dark">
+                                {{ product.name|truncatewords:5 }}
+                            </a>
+                        </h6>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="price">PKR {{ product.price }}</span>
+                        </div>
+                        
+                        <form method="post" action="{% url 'cart:cart_add' product.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-truck text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="mt-3">Free Shipping</h5>
+                    <p class="text-muted">On orders over PKR 5000</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-arrow-clockwise text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="mt-3">Easy Returns</h5>
+                    <p class="text-muted">30-day return policy</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-shield-check text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="mt-3">Secure Payment</h5>
+                    <p class="text-muted">100% secure transactions</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="p-4">
+                    <i class="bi bi-headset text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="mt-3">24/7 Support</h5>
+                    <p class="text-muted">Always here to help</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

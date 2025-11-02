@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            background: #f9f9f9;
+            padding: 30px;
+            border: 1px solid #ddd;
+        }
+        .order-details {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .total {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Order Confirmation</h1>
+            <p>Thank you for your order!</p>
+        </div>
+        
+        <div class="content">
+            <h2>Hello {{ order.shipping_full_name }},</h2>
+            <p>We've received your order and we're getting it ready. We'll notify you when it ships.</p>
+            
+            <div class="order-details">
+                <h3>Order Details</h3>
+                <p><strong>Order Number:</strong> {{ order.order_number }}</p>
+                <p><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+                
+                <h4 style="margin-top: 20px;">Items Ordered:</h4>
+                {% for item in order.items.all %}
+                <div class="item">
+                    <strong>{{ item.product_name }}</strong><br>
+                    Quantity: {{ item.quantity }} × PKR {{ item.unit_price }}<br>
+                    <strong>Subtotal: PKR {{ item.total_price }}</strong>
+                </div>
+                {% endfor %}
+                
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #667eea;">
+                    <p><strong>Subtotal:</strong> PKR {{ order.subtotal }}</p>
+                    <p><strong>Tax (10%):</strong> PKR {{ order.tax }}</p>
+                    <p><strong>Shipping:</strong> PKR {{ order.shipping_cost }}</p>
+                    <p class="total">Total: PKR {{ order.total }}</p>
+                </div>
+            </div>
+            
+            <div class="order-details">
+                <h3>Shipping Address</h3>
+                <p>
+                    {{ order.shipping_full_name }}<br>
+                    {{ order.shipping_address_line1 }}<br>
+                    {% if order.shipping_address_line2 %}
+                    {{ order.shipping_address_line2 }}<br>
+                    {% endif %}
+                    {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_postal_code }}<br>
+                    {{ order.shipping_country }}
+                </p>
+            </div>
+            
+            <center>
+                <a href="http://127.0.0.1:8000/accounts/orders/" class="button">View Order Status</a>
+            </center>
+            
+            <p style="margin-top: 30px;">
+                If you have any questions about your order, please contact us at support@shophub.com
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Thank you for shopping with ShopHub!</p>
+            <p style="font-size: 0.8em; color: #999;">
+                This email was sent to {{ order.user.email }}<br>
+                ShopHub © 2025 - All rights reserved
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - ShopHub{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Create Account</h2>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="text-danger small">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger small">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.password1.label_tag }}
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="text-danger small">{{ form.password1.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.password2.label_tag }}
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="text-danger small">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                        
+                        <div class="text-center">
+                            <p>Already have an account? <a href="{% url 'accounts:login' %}">Login</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
