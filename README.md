@@ -380,3 +380,4 @@ For shopping:
 **Built with ❤️ using Django & Python**
 
 🎉 **Your professional e-commerce store is ready to use!**
+# ecommerce-store
