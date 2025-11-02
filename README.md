@@ -104,11 +104,9 @@ A **full-featured, professional e-commerce website** built with Django and Pytho
 
 5. **Access the website:**
    - **Homepage:** http://127.0.0.1:8000/
-   - **Admin Panel:** http://127.0.0.1:8000/admin/
+   - **Admin Panel:** have password and gmail login
 
-6. **Admin Login Credentials:**
-   - **Username:** `admin`
-   - **Password:** `admin123`
+
 
 ---
 
@@ -341,9 +339,7 @@ This project is open-source and available for personal and commercial use.
 ## 🙋 Support
 
 For admin access:
-- **URL:** http://127.0.0.1:8000/admin/
-- **Username:** admin
-- **Password:** admin123
+------have it but confidential
 
 For shopping:
 - **URL:** http://127.0.0.1:8000/
